@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final List<String> entries = <String>['Ode an die Freude'];
-    final List<String> imgs = <String>['graphics/beethoven.jpg', 'graphics/beethoven.jpg'];
+    final List<String> imgs = <String>['graphics/beethoven.jpg', 'graphics/bach.jpeg'];
 
     return MaterialApp(
       title: 'Welcome to Flutter',
@@ -106,7 +106,16 @@ class _MyAppState extends State<MyApp> {
                   padding: const EdgeInsets.all(8),
                   itemCount: snapshot.data.songs.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Detail(song: snapshot.data.songs[index]),
+                          ),
+                        );
+                      },
+                      child: Container(
                         width: 220,
                         margin: EdgeInsets.all(20.0),
                         alignment: Alignment.bottomCenter,
@@ -136,6 +145,7 @@ class _MyAppState extends State<MyApp> {
                             )
                           ],
                         )
+                    )
                     );
                   }
                 );
@@ -160,4 +170,83 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+class Detail extends StatelessWidget {
+  final Song song;
+  Detail({Key key, @required this.song}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Use the Todo to create the UI.
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(song.name,
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            )),
+        backgroundColor: Color(0xFF26c6da),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: Icon(
+                  Icons.audiotrack,
+                  size: 26.0,
+                ),
+              )
+          ),
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: Icon(
+                    Icons.help_outline,
+                ),
+              )
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Container(
+          child: Image.asset('graphics/odeToJoy.png',
+              fit: BoxFit.fitWidth
+          )
+        ),
+      ),
+      floatingActionButton: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FloatingActionButton.extended(
+            heroTag: null,
+            onPressed: () {
+              // Add your onPressed code here!
+            },
+            label: const Text('Run Report',
+              style: TextStyle(
+                color: Colors.black)),
+            icon: const Icon(Icons.file_upload, color:Colors.black),
+            backgroundColor: Color(0xFFaec4c7),
+          ),
+          SizedBox(height: 20),
+          FloatingActionButton.extended(
+            heroTag: null,
+            onPressed: () {
+              // Add your onPressed code here!
+            },
+            label: const Text('Start Recording'),
+            icon: const Icon(Icons.mic),
+            backgroundColor: Color(0xFF102027),
+          ),
+        ]
+      )
+    );
+  }
+}
+
 
