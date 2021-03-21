@@ -171,16 +171,22 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class Detail extends StatelessWidget {
+class Detail extends StatefulWidget {
   final Song song;
-  Detail({Key key, @required this.song}) : super(key: key);
+
+  const Detail({Key key, @required this.song}) : super(key: key);
+  @override
+  _DetailState createState() => _DetailState();
+}
+
+class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
     // Use the Todo to create the UI.
     return Scaffold(
       appBar: AppBar(
-        title: Text(song.name,
+        title: Text(widget.song.name,
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'Poppins',
