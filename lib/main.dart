@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:orientation/orientation.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:piano_tutor/detail.dart';
 
+// The home screen.
+// Get the song list from server.
 Future<SongList> fetchSongs() async {
   final response = await http.get(Uri.http('127.0.0.1:8000', 'music/songs'));
 
@@ -21,6 +24,7 @@ Future<SongList> fetchSongs() async {
   }
 }
 
+// Construct the song list.
 class SongList {
   final List<Song> songs;
 
@@ -36,6 +40,7 @@ class SongList {
   }
 }
 
+// Define and process the song object.
 class Song {
   final int id;
   final String name;
@@ -54,6 +59,7 @@ class Song {
   }
 }
 
+// Home screen.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -83,6 +89,7 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       title: 'Welcome to Flutter',
+      theme: ThemeData(fontFamily: 'Poppins'),
       home: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -170,89 +177,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-class Detail extends StatefulWidget {
-  final Song song;
-
-  const Detail({Key key, @required this.song}) : super(key: key);
-  @override
-  _DetailState createState() => _DetailState();
-}
-
-class _DetailState extends State<Detail> {
-
-  @override
-  Widget build(BuildContext context) {
-    // Use the Todo to create the UI.
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.song.name,
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            )),
-        backgroundColor: Color(0xFF26c6da),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  Icons.audiotrack,
-                  size: 26.0,
-                ),
-              )
-          ),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                    Icons.help_outline,
-                ),
-              )
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Container(
-          child: Image.asset('graphics/odeToJoy.png',
-              fit: BoxFit.fitWidth
-          )
-        ),
-      ),
-      floatingActionButton: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          FloatingActionButton.extended(
-            heroTag: null,
-            onPressed: () {
-              // Add your onPressed code here!
-            },
-            label: const Text('Run Report',
-              style: TextStyle(
-                color: Colors.black)),
-            icon: const Icon(Icons.file_upload, color:Colors.black),
-            backgroundColor: Color(0xFFaec4c7),
-          ),
-          SizedBox(height: 20),
-          FloatingActionButton.extended(
-            heroTag: null,
-            onPressed: () {
-              // Add your onPressed code here!
-            },
-            label: const Text('Start Recording'),
-            icon: const Icon(Icons.mic),
-            backgroundColor: Color(0xFF102027),
-          ),
-        ]
-      )
-    );
-  }
-}
-
-
