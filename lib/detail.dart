@@ -11,7 +11,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class Feedback {
-  final int bpm;
+  final double bpm;
   final double speed;
   final double note;
   final double rhythm;
@@ -387,7 +387,7 @@ class _DetailState extends State<Detail> {
                     lineWidth: 7.0,
                     percent: feedback.note,
                     center: new Text(
-                      (feedback.note * 100).toString() + '%',
+                      (feedback.note*100).toString() + '%',
                       style:
                       new TextStyle(
                         color: Colors.black,
@@ -422,7 +422,7 @@ class _DetailState extends State<Detail> {
                       lineWidth: 7.0,
                       percent: feedback.rhythm,
                       center: new Text(
-                        (feedback.rhythm * 100).toString() + '%',
+                        (feedback.rhythm*100).toString() + '%',
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Poppins',
@@ -456,7 +456,7 @@ class _DetailState extends State<Detail> {
                       lineWidth: 7.0,
                       percent: feedback.speed,
                       center: new Text(
-                        (feedback.speed * 100).toString() + '%',
+                        (feedback.speed*100).toString() + '%',
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Poppins',
