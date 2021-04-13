@@ -9,6 +9,8 @@ import 'package:piano_tutor/main.dart';
 import 'package:piano_tutor/report.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 
 class Feedback {
   final double bpm;
@@ -68,6 +70,22 @@ class _DetailState extends State<Detail> {
   FlutterAudioRecorder audioRecorder;
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
 
+  void configLoading() {
+    EasyLoading.instance
+      ..displayDuration = const Duration(milliseconds: 2000)
+      ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+      ..loadingStyle = EasyLoadingStyle.dark
+      ..indicatorSize = 45.0
+      ..radius = 10.0
+      ..progressColor = Colors.yellow
+      ..backgroundColor = Colors.green
+      ..indicatorColor = Colors.yellow
+      ..textColor = Colors.yellow
+      ..maskColor = Colors.blue.withOpacity(0.5)
+      ..userInteractions = true
+      ..dismissOnTap = false;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -113,6 +131,7 @@ class _DetailState extends State<Detail> {
   }
 
   _backtoStart() {
+    showButton = false;
     _controller.animateTo(_controller.position.minScrollExtent,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
@@ -129,121 +148,123 @@ class _DetailState extends State<Detail> {
     //print("-------------------screen: ");
     //print(MediaQuery. of(context). size. width);
 
-    return Scaffold(
-        key: _scaffoldkey,
-        appBar: AppBar(
-          title: Text(widget.song.name,
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              )),
-          backgroundColor: Color(0xFF26c6da),
-          actions: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(right: 20.0),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.audiotrack,
-                    size: 26.0,
-                  ),
-                )
-            ),
-            Padding(
-                padding: EdgeInsets.only(right: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    _showBPMDialog();
-                  },
-                  child: Icon(
-                    Icons.settings,
-                  ),
-                )
-            ),
-          ],
-        ),
-        body: Padding(
-            padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-            child: new Stack(
-                children: <Widget> [
-                  new Container(
-                    //color: Colors.black,
-                    margin: const EdgeInsets.only(top: 85.0),
-                    child: ListView.builder(
-                        controller: _controller,
-                        // Remove the safe area before the first item.
-                        padding: EdgeInsets.zero,
-                        // Disable scrolling by screen touch.
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: sheet_length,
-                        itemBuilder: (BuildContext context, int index) {
-                          double w = 100;
-                          if (sheet[index].contains('eighth_half'))
-                            w = 250;
-                          else if (sheet[index] == 'graphics/notes/beam_E4.png')
-                            w = 200;
-                          else if (sheet[index].contains("dotted"))
-                            w = 150;
-                          else if (sheet[index] == 'graphics/empty_half.png')
-                            w = 50;
-                          return new Container(
-                              width: w,
-                              alignment: Alignment.topCenter,
-                              child: Image.asset('${sheet[index]}',
-                                  fit: BoxFit.fitWidth
-                              )
-                          );
-                        }
+    return FlutterEasyLoading(
+        child: Scaffold(
+          key: _scaffoldkey,
+          appBar: AppBar(
+            title: Text(widget.song.name,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                )),
+            backgroundColor: Color(0xFF26c6da),
+            actions: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.audiotrack,
+                      size: 26.0,
                     ),
-                  ),
-                  new Positioned(
-                      child: Align(
-                          alignment: Alignment.topCenter,
-                          child: new Container (
-                              height: 200,
-                              margin: const EdgeInsets.only(top: 45.0),
-                              child: Image.asset('graphics/bar.png',
-                                  fit: BoxFit.fitHeight
-                              )
-                          )
-                      )
-                  ),
-                ]
-            )
-        ),
-        floatingActionButton: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              new FloatingActionButton.extended(
-                heroTag: null,
-                onPressed: () {
-                  // Add your onPressed code here!
-                  _uploadRecording();
-                },
-                label: const Text('Run Report',
-                    style: TextStyle(
-                        color: Colors.black)),
-                icon: const Icon(Icons.file_upload, color:Colors.black),
-                backgroundColor: Color(0xFFaec4c7),
+                  )
               ),
-              SizedBox(height: 20),
-              FloatingActionButton.extended(
-                heroTag: null,
-                onPressed: () async {
-                  // Add your onPressed code here!
-                  await _onRecordButtonPressed();
-                  setState(() {});
-                },
-                label: Text(_recordText),
-                icon: Icon(_recordIcon),
-                backgroundColor: Color(0xFF102027),
+              Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _showBPMDialog();
+                    },
+                    child: Icon(
+                      Icons.settings,
+                    ),
+                  )
               ),
-            ]
-        )
+            ],
+          ),
+          body: Padding(
+              padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+              child: new Stack(
+                  children: <Widget> [
+                    new Container(
+                      //color: Colors.black,
+                      margin: const EdgeInsets.only(top: 85.0),
+                      child: ListView.builder(
+                          controller: _controller,
+                          // Remove the safe area before the first item.
+                          padding: EdgeInsets.zero,
+                          // Disable scrolling by screen touch.
+                          physics: const NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: sheet_length,
+                          itemBuilder: (BuildContext context, int index) {
+                            double w = 100;
+                            if (sheet[index].contains('eighth_half'))
+                              w = 250;
+                            else if (sheet[index] == 'graphics/notes/beam_E4.png')
+                              w = 200;
+                            else if (sheet[index].contains("dotted"))
+                              w = 150;
+                            else if (sheet[index] == 'graphics/empty_half.png')
+                              w = 50;
+                            return new Container(
+                                width: w,
+                                alignment: Alignment.topCenter,
+                                child: Image.asset('${sheet[index]}',
+                                    fit: BoxFit.fitWidth
+                                )
+                            );
+                          }
+                      ),
+                    ),
+                    new Positioned(
+                        child: Align(
+                            alignment: Alignment.topCenter,
+                            child: new Container (
+                                height: 200,
+                                margin: const EdgeInsets.only(top: 45.0),
+                                child: Image.asset('graphics/bar.png',
+                                    fit: BoxFit.fitHeight
+                                )
+                            )
+                        )
+                    ),
+                  ]
+              )
+          ),
+          floatingActionButton: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                new FloatingActionButton.extended(
+                  heroTag: null,
+                  onPressed: () {
+                    // Add your onPressed code here!
+                    _uploadRecording();
+                  },
+                  label: const Text('Run Report',
+                      style: TextStyle(
+                          color: Colors.black)),
+                  icon: const Icon(Icons.file_upload, color:Colors.black),
+                  backgroundColor: Color(0xFFaec4c7),
+                ),
+                SizedBox(height: 20),
+                FloatingActionButton.extended(
+                  heroTag: null,
+                  onPressed: () async {
+                    // Add your onPressed code here!
+                    await _onRecordButtonPressed();
+                    setState(() {});
+                  },
+                  label: Text(_recordText),
+                  icon: Icon(_recordIcon),
+                  backgroundColor: Color(0xFF102027),
+                ),
+              ]
+          )
+      )
     );
   }
 
@@ -387,7 +408,7 @@ class _DetailState extends State<Detail> {
                     lineWidth: 7.0,
                     percent: feedback.note,
                     center: new Text(
-                      (feedback.note*100).toString() + '%',
+                      ((feedback.note*1000).toInt().toDouble() / 10).toString() + '%',
                       style:
                       new TextStyle(
                         color: Colors.black,
@@ -422,7 +443,7 @@ class _DetailState extends State<Detail> {
                       lineWidth: 7.0,
                       percent: feedback.rhythm,
                       center: new Text(
-                        (feedback.rhythm*100).toString() + '%',
+                        ((feedback.rhythm*1000).toInt().toDouble() / 10).toString() + '%',
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Poppins',
@@ -456,7 +477,7 @@ class _DetailState extends State<Detail> {
                       lineWidth: 7.0,
                       percent: feedback.speed,
                       center: new Text(
-                        (feedback.speed*100).toString() + '%',
+                        ((feedback.speed*1000).toInt().toDouble() / 10).toString() + '%',
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Poppins',
@@ -546,6 +567,11 @@ class _DetailState extends State<Detail> {
   Future<void> _uploadRecording() async {
     // Can only upload the recording when the recording is stopped.
     if (showButton) {
+      showButton = false;
+      await EasyLoading.show(
+        status: 'loading...',
+        maskType: EasyLoadingMaskType.black,
+      );
       var request = http.MultipartRequest('POST', Uri.http('127.0.0.1:8000', 'music/upload'));
       request.files.add(
           await http.MultipartFile.fromPath(
@@ -560,11 +586,15 @@ class _DetailState extends State<Detail> {
       request.fields['bpm'] = selected_bpm.toString();
       await request.send().then((response) async {
         print("--------------uploaded, the result is: ");
+        await EasyLoading.dismiss();
         if (response.statusCode == 200) {
           print("uploaded");
           final respStr = await response.stream.bytesToString();
           feedback = Feedback.fromJson(jsonDecode(respStr));
+
+          print(feedback.rhythm);
           _showDialog();
+          showButton = true;
         }
       });
     } else {
@@ -654,7 +684,6 @@ class _DetailState extends State<Detail> {
       _recordIcon = Icons.replay;
       _recordText = 'Restart';
       _moveSheet();
-      showButton = false;
     } else {
       _scaffoldkey.currentState.hideCurrentSnackBar();
       _scaffoldkey.currentState.showSnackBar(SnackBar(
