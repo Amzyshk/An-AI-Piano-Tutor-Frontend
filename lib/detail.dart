@@ -161,7 +161,7 @@ class _DetailState extends State<Detail> {
                 )),
             backgroundColor: Color(0xFF26c6da),
             actions: <Widget>[
-              Padding(
+              /*Padding(
                   padding: EdgeInsets.only(right: 20.0),
                   child: GestureDetector(
                     onTap: () {},
@@ -170,7 +170,7 @@ class _DetailState extends State<Detail> {
                       size: 26.0,
                     ),
                   )
-              ),
+              ),*/
               Padding(
                   padding: EdgeInsets.only(right: 20.0),
                   child: GestureDetector(
