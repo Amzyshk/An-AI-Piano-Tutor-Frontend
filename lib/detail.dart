@@ -584,6 +584,7 @@ class _DetailState extends State<Detail> {
       // print("----------------screen: " + start_time.toString());
       request.fields['start_time'] = start_time.toString();
       request.fields['bpm'] = selected_bpm.toString();
+      request.fields['song_name'] = widget.song.name;
       await request.send().then((response) async {
         print("--------------uploaded, the result is: ");
         await EasyLoading.dismiss();
