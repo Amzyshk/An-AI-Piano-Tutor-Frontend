@@ -47,7 +47,6 @@ enum RecordingState {
   UnSet,
   Set,
   Recording,
-  Stopped,
 }
 
 class _DetailState extends State<Detail> {
@@ -585,6 +584,7 @@ class _DetailState extends State<Detail> {
       request.fields['start_time'] = start_time.toString();
       request.fields['bpm'] = selected_bpm.toString();
       request.fields['song_name'] = widget.song.name;
+      print("-------------song_name" + widget.song.name);
       await request.send().then((response) async {
         print("--------------uploaded, the result is: ");
         await EasyLoading.dismiss();
@@ -615,20 +615,16 @@ class _DetailState extends State<Detail> {
 
       case RecordingState.Recording:
         await _stopRecording();
-        _recordingState = RecordingState.Stopped;
+        _recordingState = RecordingState.Set;
         _recordIcon = Icons.play_arrow_rounded;
         _recordText = 'Restart';
         _backtoStart();
         break;
 
-      case RecordingState.Stopped:
-        await _recordVoice();
-        break;
-
       case RecordingState.UnSet:
         _scaffoldkey.currentState.hideCurrentSnackBar();
         _scaffoldkey.currentState.showSnackBar(SnackBar(
-          content: Text('Please allow recording from settings.'),
+          content: Text('Please give permission to microphone usage from settings.'),
         ));
         break;
     }
@@ -688,7 +684,7 @@ class _DetailState extends State<Detail> {
     } else {
       _scaffoldkey.currentState.hideCurrentSnackBar();
       _scaffoldkey.currentState.showSnackBar(SnackBar(
-        content: Text('Please allow recording from settings.'),
+        content: Text('Please give permission to microphone usage from settings.'),
       ));
     }
   }
