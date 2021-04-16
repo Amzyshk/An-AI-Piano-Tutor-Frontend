@@ -586,6 +586,7 @@ class _DetailState extends State<Detail> {
       request.fields['song_name'] = widget.song.name;
       print("-------------song_name" + widget.song.name);
       await request.send().then((response) async {
+        showButton = true;
         print("--------------uploaded, the result is: ");
         await EasyLoading.dismiss();
         if (response.statusCode == 200) {
@@ -595,11 +596,12 @@ class _DetailState extends State<Detail> {
 
           print(feedback.rhythm);
           _showDialog();
-          showButton = true;
         } else {
+          final respStr = await response.stream.bytesToString();
+          print(respStr);
           _scaffoldkey.currentState.hideCurrentSnackBar();
           _scaffoldkey.currentState.showSnackBar(SnackBar(
-            content: Text('WARNING: Error encountered when generating the report!'),
+            content: Text('WARNING: ' + respStr),
           ));
         }
       });
