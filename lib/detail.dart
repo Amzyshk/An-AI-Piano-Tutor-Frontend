@@ -596,6 +596,11 @@ class _DetailState extends State<Detail> {
           print(feedback.rhythm);
           _showDialog();
           showButton = true;
+        } else {
+          _scaffoldkey.currentState.hideCurrentSnackBar();
+          _scaffoldkey.currentState.showSnackBar(SnackBar(
+            content: Text('WARNING: Error encountered when generating the report!'),
+          ));
         }
       });
     } else {
