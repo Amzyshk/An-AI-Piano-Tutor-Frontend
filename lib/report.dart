@@ -34,13 +34,24 @@ class _ReportState extends State<Report> {
           new Container(
             alignment: Alignment.topCenter,
             margin: const EdgeInsets.only(top: 20.0),
-            child: new Text('N - Wrong Note; R - Wrong Rhythm; O - Note omitted; E - Extra notes played',
+            child: new Text('N - Wrong Note; R - Wrong Rhythm; B - Both Note and Rhythm are wrong',
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ))
+          ),
+          new Container(
+              alignment: Alignment.topCenter,
+              margin: const EdgeInsets.only(top: 20.0),
+              child: new Text('O - Note omitted; E - Extra notes played',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ))
           ),
           new Container(
             height: 90,
@@ -67,6 +78,10 @@ class _ReportState extends State<Report> {
 
                     case 4:
                       text = "R";
+                      break;
+
+                    case 5:
+                      text = "B";
                       break;
                   }
                   double w = 50;
